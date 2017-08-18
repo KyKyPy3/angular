@@ -197,13 +197,25 @@ export function checkAndUpdateDirectiveInline(
     changes = updateProp(view, providerData, def, 9, v9, changes);
   }
   if (changes) {
-    directive.ngOnChanges(changes);
+    try {
+      directive.ngOnChanges(changes);
+    } catch (e) {
+      view.root.errorHandler.handleError(e);
+    }
   }
   if ((view.state & ViewState.FirstCheck) && (def.flags & NodeFlags.OnInit)) {
-    directive.ngOnInit();
+    try {
+      directive.ngOnInit();
+    } catch (e) {
+      view.root.errorHandler.handleError(e);
+    }
   }
   if (def.flags & NodeFlags.DoCheck) {
-    directive.ngDoCheck();
+    try {
+      directive.ngDoCheck();
+    } catch (e) {
+      view.root.errorHandler.handleError(e);
+    }
   }
   return changed;
 }
@@ -221,13 +233,25 @@ export function checkAndUpdateDirectiveDynamic(
     }
   }
   if (changes) {
-    directive.ngOnChanges(changes);
+    try {
+      directive.ngOnChanges(changes);
+    } catch (e) {
+      view.root.errorHandler.handleError(e);
+    }
   }
   if ((view.state & ViewState.FirstCheck) && (def.flags & NodeFlags.OnInit)) {
-    directive.ngOnInit();
+    try {
+      directive.ngOnInit();
+    } catch (e) {
+      view.root.errorHandler.handleError(e);
+    }
   }
   if (def.flags & NodeFlags.DoCheck) {
-    directive.ngDoCheck();
+    try {
+      directive.ngDoCheck();
+    } catch (e) {
+      view.root.errorHandler.handleError(e);
+    }
   }
   return changed;
 }
@@ -510,18 +534,38 @@ function callProviderLifecycles(view: ViewData, index: number, lifecycles: NodeF
   }
   Services.setCurrentNode(view, index);
   if (lifecycles & NodeFlags.AfterContentInit) {
-    provider.ngAfterContentInit();
+    try {
+      provider.ngAfterContentInit();
+    } catch (e) {
+      view.root.errorHandler.handleError(e);
+    }
   }
   if (lifecycles & NodeFlags.AfterContentChecked) {
-    provider.ngAfterContentChecked();
+    try {
+      provider.ngAfterContentChecked();
+    } catch (e) {
+      view.root.errorHandler.handleError(e);
+    }
   }
   if (lifecycles & NodeFlags.AfterViewInit) {
-    provider.ngAfterViewInit();
+    try {
+      provider.ngAfterViewInit();
+    } catch (e) {
+      view.root.errorHandler.handleError(e);
+    }
   }
   if (lifecycles & NodeFlags.AfterViewChecked) {
-    provider.ngAfterViewChecked();
+    try {
+      provider.ngAfterViewChecked();
+    } catch (e) {
+      view.root.errorHandler.handleError(e);
+    }
   }
   if (lifecycles & NodeFlags.OnDestroy) {
-    provider.ngOnDestroy();
+    try {
+      provider.ngOnDestroy();
+    } catch (e) {
+      view.root.errorHandler.handleError(e);
+    }
   }
 }

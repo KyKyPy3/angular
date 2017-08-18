@@ -323,7 +323,11 @@ export function checkNoChangesView(view: ViewData) {
   markProjectedViewsForCheck(view);
   Services.updateDirectives(view, CheckType.CheckNoChanges);
   execEmbeddedViewsAction(view, ViewAction.CheckNoChanges);
-  Services.updateRenderer(view, CheckType.CheckNoChanges);
+  try {
+    Services.updateRenderer(view, CheckType.CheckNoChanges);
+  } catch (e) {
+    view.root.errorHandler.handleError(e);
+  }
   execComponentViewsAction(view, ViewAction.CheckNoChanges);
   // Note: We don't check queries for changes as we didn't do this in v2.x.
   // TODO(tbosch): investigate if we can enable the check again in v5.x with a nicer error message.
@@ -347,7 +351,11 @@ export function checkAndUpdateView(view: ViewData) {
       view, NodeFlags.AfterContentChecked |
           (view.state & ViewState.FirstCheck ? NodeFlags.AfterContentInit : 0));
 
-  Services.updateRenderer(view, CheckType.CheckAndUpdate);
+  try {
+    Services.updateRenderer(view, CheckType.CheckAndUpdate);
+  } catch (e) {
+    view.root.errorHandler.handleError(e);
+  }
 
   execComponentViewsAction(view, ViewAction.CheckAndUpdate);
   execQueriesAction(
